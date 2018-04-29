@@ -17,7 +17,7 @@
 # limitations under the License.
 
 
-import smbus,time
+import smbus2,time
 DEVICE_ADDRESS = 0x40
 TEMPERATURE = 0xE3
 HUMIDITY = 0xF5
@@ -42,7 +42,7 @@ class si7021:
 
             If the device does not exist on addr IOError gets thrown by the smbus library.
         """
-        self.bus = smbus.SMBus(bus)
+        self.bus = smbus2.SMBus(bus)
         self.addr = addr
 
     def _fix_precision(self, num):

@@ -1,6 +1,17 @@
 #!/usr/bin/python
-import sys,time,si7021,json
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import range
+from builtins import int
+from builtins import object
+import sys,os,time,si7021,json
+if int(sys.version[0]) < 3:
+    from future import standard_library
+    standard_library.install_aliases()
 from argparse import ArgumentParser
+
 
 # Test Script si.py
 # Silicon Labs si7021 Interface Class
@@ -18,8 +29,14 @@ from argparse import ArgumentParser
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+def output(s):
+    global outobj
+    outobj.write('{}\n'.format(s))
+    outobj.flush()
 
-DEGSYM = u'\N{DEGREE SIGN}'
+def err(s):
+    sys.stderr.write('{}\n'.format(s.encode(encoding="utf-8", errors="strict")))
+
 
 si = si7021.si7021()
 ttype = si7021.TTYPE_DEGF
@@ -34,6 +51,7 @@ parser.add_argument('-d', '--delay', action='store', dest='delay', type=float, m
                     default=1.0, help='Delay in seconds and/or fraction of seconds to delay while looping.')
 parser.add_argument('-f', '--farenheit', action='store_const', dest='units', const='f', 
                     help='Get results in farenheit.')
+parser.add_argument('-o', '--outfile', action='store',dest='outfile', default=None, help='Output to file n', metavar='file')
 parser.add_argument('-p','--precise', action='store_true', default=False, dest='precise',
                     help='Use floating point precision (default is integer)')
 parser.add_argument('-l','--loop', action='store_true', default=False, dest='loop',
@@ -46,6 +64,19 @@ parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
 args = parser.parse_args()
 if not args.units:
     args.units = 'f'
+
+DEGSYM = u'\N{DEGREE SIGN}'
+if not args.outfile:
+    outobj=sys.stdout
+else:
+    try:
+        outobj = open(args.outfile,'w')
+        if int(sys.version[0]) < 3:
+            DEGSYM='*'
+    except Exception as e:
+        err('Cannot open output file {}: {}'.format(args.outfile, e))
+        sys.exit(1)
+
 ttype = ttypes.index(args.units)
 if args.precise:
     cv = float 
@@ -57,7 +88,7 @@ while True:
         [temp,humi] = si(ttype,args.precise)
 
         if args.json:
-            j = {}
+            j = {'time': time.strftime("%c",time.localtime())}
             if args.units == 'b':
                 j['temp_c'] = cv(temp[0])
                 j['temp_f'] = cv(temp[1])
@@ -65,10 +96,9 @@ while True:
                 j['temp_{}'.format(ttypes[ttype].lower())] = cv(temp)
             j['humidity'] = cv(humi)
             j['units'] = ttypes[ttype].upper()
-            print json.dumps(j)
+            output(json.dumps(j))
         else:
             if args.units == 'b':
-                print 'Both Processing'
                 s = u''
                 for i in range(0,2):
                     if args.precise:
@@ -85,13 +115,13 @@ while True:
             else:
                 h  = '{:3d}%'.format(int(humi))
 
-            print u'Relative humidity is {}, Temperature is {}'.format(h,s)
+            output('Relative humidity is {}, Temperature is {}'.format(h,s))
         
     except KeyboardInterrupt as k:
-        print 'Ouch {}'.format(k)
+        print('Ouch {}'.format(k))
         sys.exit(0)
     except IOError as e:
-        print 'Exception encountered: {}'.format(e)
+        err('Exception encountered: {}'.format(e))
     if not args.loop:
         break
     time.sleep(args.delay)
