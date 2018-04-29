@@ -2,7 +2,7 @@
 .SH NAME
  si  -  si -Silicon Labs si7021 Tester
 .SH SYNOPSIS
- si si.py [-h] [-b] [-c] [-f] [-p] [-l] [-j] [--version]
+ si si.py [-h] [-b] [-c] [-d] <seconds> [-f] [-p] [-l] [-j] [--version]
 .SH OPTIONS
 .IP -h|--help
 Show help text
@@ -10,6 +10,8 @@ Show help text
 Return Temperatures as both celsius and farenheit and celsius.
 .IP -c|--celsius
 Return temperature as celsius.
+.IP -d|--delay
+Delay in seconds and/or fraction of seconds to delay while looping.
 .IP -f|--farenheit
 Return temperature as farenheit.
 .IP -j|--json

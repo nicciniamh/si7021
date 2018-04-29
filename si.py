@@ -23,13 +23,15 @@ DEGSYM = u'\N{DEGREE SIGN}'
 
 si = si7021.si7021()
 ttype = si7021.TTYPE_DEGF
-ttypes = ['c','f','b','--help']
+ttypes = ['c','f','b']
 
 parser = ArgumentParser(description='Test program for si7021 Sensor Class version %(prog)s 1.0')
 parser.add_argument('-b', '--both', action='store_const', dest='units', const='b', 
                     help='Get results as both farenheit and celsius.')
 parser.add_argument('-c', '--celsius', action='store_const', dest='units', const='c', 
                     help='Get results in celsius.')
+parser.add_argument('-d', '--delay', action='store', dest='delay', type=float, metavar='seconds',
+                    default=1.0, help='Delay in seconds and/or fraction of seconds to delay while looping.')
 parser.add_argument('-f', '--farenheit', action='store_const', dest='units', const='f', 
                     help='Get results in farenheit.')
 parser.add_argument('-p','--precise', action='store_true', default=False, dest='precise',
@@ -42,6 +44,7 @@ parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
 
 
 args = parser.parse_args()
+
 ttype = ttypes.index(args.units)
 if args.precise:
     cv = float 
@@ -54,12 +57,17 @@ while True:
 
         if args.json:
             j = {}
+            if args.units == 'b':
+                j['temp_c'] = cv(temp[0])
+                j['temp_f'] = cv(temp[1])
+            else:
+                j['temperature'] = cv(temp)
             j['humidity'] = cv(humi)
-            j['temperature'] = cv(temp)
             j['units'] = ttypes[ttype].upper()
             print json.dumps(j)
         else:
-            if ttype == si7021.TTYPE_BOTH:
+            if args.units == 'b':
+                print 'Both Processing'
                 s = u''
                 for i in range(0,2):
                     if args.precise:
@@ -85,4 +93,4 @@ while True:
         print 'Exception encountered: {}'.format(e)
     if not args.loop:
         break
-    time.sleep(1)
+    time.sleep(args.delay)
