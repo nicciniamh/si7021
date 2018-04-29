@@ -44,7 +44,8 @@ parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
 
 
 args = parser.parse_args()
-
+if not args.units:
+    args.units = 'f'
 ttype = ttypes.index(args.units)
 if args.precise:
     cv = float 
