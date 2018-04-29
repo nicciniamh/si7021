@@ -14,11 +14,11 @@ Copyright (C) 2018 Nicole Stevens
  limitations under the License.
 
 This is a simple class, currently written for Python 2.7. It does basic reads of the temperature
-and humidity from the si7021. 
+and humidity from the si7021. This code works comfortably with Python 2 or Python 3
 
-Requires python-smbus.
+Requires smbus2.
 
- `sudo apt-get install python-smbus`
+ `pip install smbus2`
 
 Module Data:
 ``` Python
