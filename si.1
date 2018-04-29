@@ -1,0 +1,48 @@
+.TH  si 1
+.SH NAME
+ si  -  si -Silicon Labs si7021 Tester
+.SH SYNOPSIS
+ si si.py [-h] [-b] [-c] [-f] [-p] [-l] [-j] [--version]
+.SH OPTIONS
+.IP -h|--help
+Show help text
+.IP -b|--both
+Return Temperatures as both celsius and farenheit and celsius.
+.IP -c|--celsius
+Return temperature as celsius.
+.IP -f|--farenheit
+Return temperature as farenheit.
+.IP -j|--json
+Print results in JSON format to stdout
+.IP -l|--loop
+Continue looping with 1s interval until interrupted
+.IP -p|--precise
+Don't limit precision in results
+.IP --version
+Print version and exit.
+.BR     
+This script will test the Silicon Labs si7021 high precision temperature and humidity sensor interface. By default
+it will print humidty and temperature in farenheit and exit. It can print temperature as celsius, farenheit or both. 
+It can display temperatures in JSON format and also loop the program until interrupted.
+.PP
+Example: 
+.BR
+.PP
+.B si --loop --celsius --json --precise 
+.PP
+ This will result with:
+.PP
+{"units": "C", "temperature": 22.93821044921875, "humidity": 54.78338623046875}
+.PP
+{"units": "C", "temperature": 22.948935546875, "humidity": 54.78338623046875}
+.PP
+{"units": "C", "temperature": 22.93821044921875, "humidity": 54.78338623046875}
+.PP
+.BR
+.PP 
+.B si --farenheit
+.PP
+Relative humidity is  50%, Temperature is  73°F
+.PP
+.SH AUTHOR
+Nicole Stevens (https://github.com/nicciniamh/si7021)

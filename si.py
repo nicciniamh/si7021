@@ -25,15 +25,20 @@ si = si7021.si7021()
 ttype = si7021.TTYPE_DEGF
 ttypes = ['c','f','b','--help']
 
-parser = ArgumentParser()
-parser.add_argument('-u', '--units', action='store', dest='units', choices=['c','f','b'], default='f',
-                    help='Specify units of measure for temperature. c, f or b for both')
+parser = ArgumentParser(description='Test program for si7021 Sensor Class version %(prog)s 1.0')
+parser.add_argument('-b', '--both', action='store_const', dest='units', const='b', 
+                    help='Get results as both farenheit and celsius.')
+parser.add_argument('-c', '--celsius', action='store_const', dest='units', const='c', 
+                    help='Get results in celsius.')
+parser.add_argument('-f', '--farenheit', action='store_const', dest='units', const='f', 
+                    help='Get results in farenheit.')
 parser.add_argument('-p','--precise', action='store_true', default=False, dest='precise',
                     help='Use floating point precision (default is integer)')
 parser.add_argument('-l','--loop', action='store_true', default=False, dest='loop',
                     help='Loop until exception')
 parser.add_argument('-j','--json', action='store_true', default=False, dest='json',
                     help = 'Output in JSON format')
+parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
 
 
 args = parser.parse_args()
