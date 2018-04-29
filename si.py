@@ -61,7 +61,7 @@ while True:
                 j['temp_c'] = cv(temp[0])
                 j['temp_f'] = cv(temp[1])
             else:
-                j['temperature'] = cv(temp)
+                j['temp_{}'.format(ttypes[ttype].lower())] = cv(temp)
             j['humidity'] = cv(humi)
             j['units'] = ttypes[ttype].upper()
             print json.dumps(j)
