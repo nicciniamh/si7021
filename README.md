@@ -14,7 +14,9 @@ Copyright (C) 2018 Nicole Stevens
  limitations under the License.
 
 This is a simple class, currently written for Python 2.7. It does basic reads of the temperature
-and humidity from the si7021. This code works comfortably with Python 2 or Python 3
+and humidity from the si7021. 
+
+This code works comfortably with Python 2.7+ or Python 3 if the future module is installed (required for Python 2.7)
 
 Requires smbus2.
 
@@ -75,5 +77,5 @@ The call method __call__ is not called directly but as:
 The si7021 returns temperature and humidity with high precision. The default operation of the call, temperature and humidity methods is to return a floating point number to two decimal places. By setting precise to True, the floating point number returned is as precise as the device can give. 
 
 ## Notes about my environment I use: 
-My development system is a HP Laptop running Linux Mint 18.3. The I2C interface I use is a ch341a USB GPIO/I2C device. To use this device with Linux I have a kernel module by Tse Lun Bien. This, for me, creates an I2C bus number 8. I have not tested this code but it *should* work with a Raspberry PI running Raspian.
+My development system is a HP Laptop running Linux Mint 18.3. The I2C interface I use is a ch341a USB GPIO/I2C device. To use this device with Linux I have a kernel module by Tse Lun Bien. This, for me, creates an I2C bus number 8. Adding the CH341 device this works, also, on my Raspberry Pi 2B. I have every confidence this will work with my Pi using the internal I2C pins on the 40 pin GPIO header. 
 
