@@ -2,10 +2,12 @@
 .SH NAME
  si  -  si -Silicon Labs si7021 Tester
 .SH SYNOPSIS
- si si.py [-h] [-b] [-c] [-d] <seconds> [-f] [-p] [-l] [-j] [-o] <file> [--version]
+ si si.py [-h] [-B] [-b] [-c] [-d] <seconds> [-f] [-p] [-l] [-j] [-o] <file> [--version]
 .SH OPTIONS
 .IP -h|--help
 Show help text
+.IP -B|--bus
+Select I2C Bus to use, will use device in /dev/i2c-${bus}
 .IP -b|--both
 Return Temperatures as both celsius and farenheit and celsius.
 .IP -c|--celsius

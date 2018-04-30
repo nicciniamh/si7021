@@ -38,11 +38,12 @@ def err(s):
     sys.stderr.write('{}\n'.format(s.encode(encoding="utf-8", errors="strict")))
 
 
-si = si7021.si7021()
 ttype = si7021.TTYPE_DEGF
 ttypes = ['c','f','b']
 
 parser = ArgumentParser(description='Test program for si7021 Sensor Class version %(prog)s 1.0')
+parser.add_argument('-B', '--bus', action='store', dest='bus', default=8, type=int,
+                    help='Select I2C bus.')
 parser.add_argument('-b', '--both', action='store_const', dest='units', const='b', 
                     help='Get results as both farenheit and celsius.')
 parser.add_argument('-c', '--celsius', action='store_const', dest='units', const='c', 
@@ -65,6 +66,7 @@ args = parser.parse_args()
 if not args.units:
     args.units = 'f'
 
+si = si7021.si7021(args.bus)
 DEGSYM = u'\N{DEGREE SIGN}'
 if not args.outfile:
     outobj=sys.stdout
